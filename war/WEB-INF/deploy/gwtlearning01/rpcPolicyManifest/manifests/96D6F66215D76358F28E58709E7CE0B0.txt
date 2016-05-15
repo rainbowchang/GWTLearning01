@@ -1,0 +1,2 @@
+serviceClass: me.zch.gwt.client.GreetingService
+path: 778ACF5B2C7959E2D2E34C2BD53B3251.gwt.rpc
