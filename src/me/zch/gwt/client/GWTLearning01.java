@@ -30,7 +30,7 @@ import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
 /**
- * Entry point classes define <code>onModuleLoad()</code>.
+ * Entry point classes define <code>onModuleLoad()</code>.//add 201605232116
  */
 public class GWTLearning01 implements EntryPoint {
 	/**
