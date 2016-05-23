@@ -3,17 +3,29 @@ package me.zch.gwt.client;
 import me.zch.gwt.shared.FieldVerifier;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.event.dom.client.KeyUpEvent;
 import com.google.gwt.event.dom.client.KeyUpHandler;
+import com.google.gwt.event.dom.client.MouseOverEvent;
+import com.google.gwt.event.dom.client.MouseOverHandler;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DialogBox;
+import com.google.gwt.user.client.ui.DockPanel;
+import com.google.gwt.user.client.ui.FlexTable;
+import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HTML;
+import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.RootPanel;
+import com.google.gwt.user.client.ui.StackLayoutPanel;
+import com.google.gwt.user.client.ui.StackPanel;
+import com.google.gwt.user.client.ui.TabLayoutPanel;
+import com.google.gwt.user.client.ui.TabPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
@@ -38,21 +50,37 @@ public class GWTLearning01 implements EntryPoint {
 	 */
 	public void onModuleLoad() {
 		final Button sendButton = new Button("Send to server");
-		final Button button_2  = new Button("Anthoer button");
+		final Button eventButton = new Button("fire event");
 		final TextBox nameField = new TextBox();
 		nameField.setText("GWT User");
 		final Label errorLabel = new Label();
+		final FlexTable ft = new FlexTable();
+		final PopupPanel pp = new PopupPanel(true, true);
+		pp.setTitle("This is Title");
+		final Image img = new Image();
 
-		// We can add style names to widgets
+		pp.add(img);
+		final StackLayoutPanel sp = new StackLayoutPanel(null);
+		final DockPanel dp = new DockPanel();
+		
+
+		final TabLayoutPanel tp = new TabLayoutPanel(20, Unit.PX);
+		tp.add(eventButton, "eventButton");
+		tp.add(sendButton, "sendButton");
+
+		//final FlowPanel fp = new FlowPanel();
+//		fp.add(sendButton);
+		//fp.add(eventButton);
 		sendButton.addStyleName("sendButton");
-		//button_2.addStyleName("sendButton");
-		// Add the nameField and sendButton to the RootPanel
-		// Use RootPanel.get() to get the entire body element
-		RootPanel.get("nameFieldContainer").add(nameField);
-		RootPanel.get("sendButtonContainer").add(sendButton);
-		RootPanel.get("sendButtonContainer").add(button_2);
+//		RootPanel.get("nameFieldContainer").add(nameField);
+//		RootPanel.get("sendButtonContainer").add(sendButton);
+//		RootPanel.get("sendButtonContainer").add(eventButton);
+		//RootPanel.get("sendButtonContainer").add(fp);
+		RootPanel.get("sendButtonContainer").add(tp);
+		
 		RootPanel.get("errorLabelContainer").add(errorLabel);
-
+		RootPanel.get("errorLabelContainer").add(ft);
+		
 		// Focus the cursor on the name field when the app loads
 		nameField.setFocus(true);
 		nameField.selectAll();
@@ -144,5 +172,15 @@ public class GWTLearning01 implements EntryPoint {
 		MyHandler handler = new MyHandler();
 		sendButton.addClickHandler(handler);
 		nameField.addKeyUpHandler(handler);
+		
+		class myEventHandler implements MouseOverHandler{
+			@Override
+			public void onMouseOver(MouseOverEvent event) {
+				img.setUrl("http://p3.ifengimg.com/haina/2016_21/1417c933b2a5539_w640_h462.jpg");
+				pp.show();
+			}
+		}
+		eventButton.addMouseOverHandler(new myEventHandler());
+		
 	}
 }
