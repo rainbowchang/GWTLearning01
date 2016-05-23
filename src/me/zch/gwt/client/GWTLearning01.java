@@ -60,31 +60,16 @@ public class GWTLearning01 implements EntryPoint {
 		final Image img = new Image();
 
 		pp.add(img);
-		final StackLayoutPanel sp = new StackLayoutPanel(null);
-		final DockPanel dp = new DockPanel();
-		
-
 		final TabLayoutPanel tp = new TabLayoutPanel(20, Unit.PX);
 		tp.add(eventButton, "eventButton");
 		tp.add(sendButton, "sendButton");
-
-		//final FlowPanel fp = new FlowPanel();
-//		fp.add(sendButton);
-		//fp.add(eventButton);
 		sendButton.addStyleName("sendButton");
-//		RootPanel.get("nameFieldContainer").add(nameField);
-//		RootPanel.get("sendButtonContainer").add(sendButton);
-//		RootPanel.get("sendButtonContainer").add(eventButton);
-		//RootPanel.get("sendButtonContainer").add(fp);
 		RootPanel.get("sendButtonContainer").add(tp);
-		
 		RootPanel.get("errorLabelContainer").add(errorLabel);
 		RootPanel.get("errorLabelContainer").add(ft);
-		
 		// Focus the cursor on the name field when the app loads
 		nameField.setFocus(true);
 		nameField.selectAll();
-
 		// Create the popup dialog box
 		final DialogBox dialogBox = new DialogBox();
 		dialogBox.setText("Remote Procedure Call");
