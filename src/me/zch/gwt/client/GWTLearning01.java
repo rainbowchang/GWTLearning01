@@ -3,6 +3,7 @@ package me.zch.gwt.client;
 import me.zch.gwt.shared.FieldVerifier;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -46,12 +47,57 @@ public class GWTLearning01 implements EntryPoint {
 	private final GreetingServiceAsync greetingService = GWT.create(GreetingService.class);
 
 	final Button button01 = new Button();
-	
+	final Label timeLabel = new Label();
 	/**
 	 * This is the entry point method.
 	 */
 	public void onModuleLoad() {
+		button01.setText("Get Time");
+		button01.addStyleName("sendButton");
+		timeLabel.setText("Press to get current time...");
+		RootPanel.get("container01").add(timeLabel);
 		RootPanel.get("container01").add(button01);
-		
+		button01.addClickHandler(new MyHandler());
 	}
+	
+	class MyHandler implements ClickHandler{
+
+		@Override
+		public void onClick(ClickEvent event) {
+			sendNameToServer();
+		}
+		
+		private void sendNameToServer() {
+			
+			greetingService.greetServer("hello", new AsyncCallback<String>() {
+
+				@Override
+				public void onFailure(Throwable caught) {
+					timeLabel.setText(caught.getMessage());
+				}
+
+				@Override
+				public void onSuccess(String result) {
+					
+					timeLabel.setText(result);
+				}
+				
+			});
+		}
+	}
+
+	class Customer extends JavaScriptObject {
+
+		  // Overlay types always have protected, zero-arg ctors
+		  protected Customer() { }
+
+		  // Typically, methods on overlay types are JSNI
+		  public final native String getFirstName() ;
+		  public final native String getLastName()  ;
+
+		  // Note, though, that methods aren't required to be JSNI
+		  public final String getFullName() {
+		    return getFirstName() + " " + getLastName();
+		  }
+		}
 }

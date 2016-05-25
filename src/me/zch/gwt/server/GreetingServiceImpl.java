@@ -2,6 +2,9 @@ package me.zch.gwt.server;
 
 import me.zch.gwt.client.GreetingService;
 import me.zch.gwt.shared.FieldVerifier;
+
+import java.util.Date;
+
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 /**
@@ -11,22 +14,17 @@ import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 public class GreetingServiceImpl extends RemoteServiceServlet implements GreetingService {
 
 	public String greetServer(String input) throws IllegalArgumentException {
-		// Verify that the input is valid. 
-		if (!FieldVerifier.isValidName(input)) {
-			// If the input is not valid, throw an IllegalArgumentException back to
-			// the client.
-			throw new IllegalArgumentException("Name must be at least 4 characters long");
-		}
-
-		String serverInfo = getServletContext().getServerInfo();
-		String userAgent = getThreadLocalRequest().getHeader("User-Agent");
-
-		// Escape data from the client to avoid cross-site script vulnerabilities.
-		input = escapeHtml(input);
-		userAgent = escapeHtml(userAgent);
-
-		return "Hello, " + input + "!<br><br>I am running " + serverInfo + ".<br><br>It looks like you are using:<br>"
-				+ userAgent;
+//		Date date = new Date();
+//		String s = input + "," + date.toString();
+//		double d = Math.random() * 10;
+//		double i = Math.ceil(d);
+//		if(i<3.0)
+//			throw new IllegalArgumentException("Less than 3.0 .");
+//		s = Double.toString(i) + "  " + s;
+//		return escapeHtml(s);
+		
+		String ss ="[{ \"FirstName\" : \"Jimmy\", \"LastName\" : \"Webber\" },{ \"FirstName\" : \"Alan\",  \"LastName\" : \"Dayal\" },{ \"FirstName\" : \"Keanu\", \"LastName\" : \"Spoon\" },{ \"FirstName\" : \"Emily\", \"LastName\" : \"Rudnick\" }]";
+		return escapeHtml(ss);
 	}
 
 	/**
@@ -42,4 +40,5 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements Greetin
 		}
 		return html.replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;");
 	}
+
 }
