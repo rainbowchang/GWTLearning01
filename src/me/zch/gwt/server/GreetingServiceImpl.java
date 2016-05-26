@@ -22,8 +22,8 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements Greetin
 //			throw new IllegalArgumentException("Less than 3.0 .");
 //		s = Double.toString(i) + "  " + s;
 //		return escapeHtml(s);
-		
-		String ss ="[{ \"FirstName\" : \"Jimmy\", \"LastName\" : \"Webber\" },{ \"FirstName\" : \"Alan\",  \"LastName\" : \"Dayal\" },{ \"FirstName\" : \"Keanu\", \"LastName\" : \"Spoon\" },{ \"FirstName\" : \"Emily\", \"LastName\" : \"Rudnick\" }]";
+
+		String ss = "{ \"FirstName\" : \"Jimmy\", \"LastName\" : \"Webber\", \"List\" : [{\"Name\":\"book\",\"Sammer\": 1},{\"Name\":\"wine\",\"Sammer\": 2},{\"Name\":\"lightening\",\"Sammer\": 4}]}";
 		return escapeHtml(ss);
 	}
 
