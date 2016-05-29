@@ -1,6 +1,10 @@
 package me.zch.gwt.client;
 
 import me.zch.gwt.shared.FieldVerifier;
+
+import java.util.Calendar;
+import java.util.Date;
+
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JavaScriptObject;
@@ -13,13 +17,18 @@ import com.google.gwt.event.dom.client.KeyUpEvent;
 import com.google.gwt.event.dom.client.KeyUpHandler;
 import com.google.gwt.event.dom.client.MouseOverEvent;
 import com.google.gwt.event.dom.client.MouseOverHandler;
+import com.google.gwt.event.logical.shared.SelectionEvent;
+import com.google.gwt.event.logical.shared.SelectionHandler;
+import com.google.gwt.i18n.client.NumberFormat;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.json.client.JSONString;
 import com.google.gwt.json.client.JSONValue;
+import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.DockPanel;
 import com.google.gwt.user.client.ui.FlexTable;
@@ -34,12 +43,14 @@ import com.google.gwt.user.client.ui.StackPanel;
 import com.google.gwt.user.client.ui.TabLayoutPanel;
 import com.google.gwt.user.client.ui.TabPanel;
 import com.google.gwt.user.client.ui.TextBox;
+import com.google.gwt.user.client.ui.Tree;
+import com.google.gwt.user.client.ui.TreeItem;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.google.web.bindery.autobean.shared.AutoBeanCodex;
 import com.google.web.bindery.autobean.shared.AutoBeanFactory;
 import com.google.web.bindery.autobean.shared.AutoBeanUtils;
-
+import com.google.gwt.i18n.client.DateTimeFormat;
 /**
  * Entry point classes define <code>onModuleLoad()</code>.//add 201605232116
  */
@@ -57,25 +68,77 @@ public class GWTLearning01 implements EntryPoint {
 	private final GreetingServiceAsync greetingService = GWT.create(GreetingService.class);
 	MyFactory factory = GWT.create(MyFactory.class);
 	final Button button01 = new Button();
-	final Label timeLabel = new Label();
+	final Label jsonLabel = new Label();
+	final HTML labelDescription = new HTML();
+	//-------------------------
+	final Button button02 = new Button();
+	private Timer elapsedTimer;
+	private Label elapsedLabel = new Label();
+	private long startTime;
+	//-------------------------
+	Tree tree = new Tree();
+	Label treeLabel = new Label();
 	/**
 	 * This is the entry point method.
 	 */
 	public void onModuleLoad() {
-		button01.setText("Get Time");
+		RootPanel.get("container01").add(labelDescription);
+		
+		button01.setText("JavaScriptObject Test");
 		button01.addStyleName("sendButton");
-		//timeLabel.setText("Press to get current time...");
-		RootPanel.get("container01").add(timeLabel);
-		RootPanel.get("container01").add(button01);
-		button01.addClickHandler(new MyHandler());
+		RootPanel.get("container02").add(jsonLabel);
+		RootPanel.get("container02").add(button01);
+		button01.addClickHandler(new JavaScriptObjectHandler());
+		
+		button02.setText("AutoBean Test");
+		button02.addStyleName("sendButton");
+		RootPanel.get("container02").add(button02);
+		button02.addClickHandler(new AutoBeanHandler());
         final TInterface test = makeTest();
         test.setName("achu");
-        timeLabel.setText(deserializeFromJson(serializeToJson(test)).getName());
+        jsonLabel.setText(deserializeFromJson(serializeToJson(test)).getName());
         
+        greetingService.greetServer(0, "hello", new AsyncCallback<String>() { //页面加载的时候调用说明文档
+
+			@Override
+			public void onFailure(Throwable caught) {
+				labelDescription.setHTML(caught.getMessage());
+				labelDescription.addStyleName("server-error");
+			}
+
+			@Override
+			public void onSuccess(String result) {
+				labelDescription.removeStyleName("server-error");
+				labelDescription.setHTML(result);
+			}
+        });
+        
+        RootPanel.get("container02").add(elapsedLabel);
+		// ... Add elapsedLabel to a Panel ...
+		// Create a new timer
+		elapsedTimer = new Timer() {
+			public void run() {
+				showElapsed();
+			}
+		};
+		startTime = System.currentTimeMillis();
+		// Schedule the timer for every 1/2 second (500 milliseconds)
+		elapsedTimer.scheduleRepeating(500);
+		// ... The elapsed timer has started ...
+        
+        //---------------------------------
+        RootPanel.get("container03").add(treeLabel);
+        TreeItem root = new TreeItem(); 
+        root.setText("Root");
+        root.addTextItem("item0"); 
+        TreeItem item = new TreeItem(new CheckBox("item3")); 
+        root.addItem(item);
+        tree.addItem(root);
+        RootPanel.get("container03").add(tree);
+        tree.addSelectionHandler(new TreeSelectHendler());
 	}
 
-	
-	class MyHandler implements ClickHandler {
+	class JavaScriptObjectHandler implements ClickHandler {
 
 		@Override
 		public void onClick(ClickEvent event) {
@@ -83,24 +146,32 @@ public class GWTLearning01 implements EntryPoint {
 		}
 
 		private void sendNameToServer() {
-			
-			//AutoBean<Customer> bean = AutoBeanFactory.create(Customer.class, null);
-
-			greetingService.greetServer("hello", new AsyncCallback<String>() {
-
+			greetingService.greetServer(1, "hello", new AsyncCallback<String>() {
 				@Override
 				public void onFailure(Throwable caught) {
-					timeLabel.setText(caught.getMessage());
+					jsonLabel.setText(caught.getMessage());
 				}
 
 				@Override
 				public void onSuccess(String result) {
 					Customer c = JsonUtils.safeEval(result);
-					timeLabel.setText(Integer.toString(c.getList()[2].getSammer()));
-					//timeLabel.setText(c.getFullName());
+					jsonLabel.setText(Integer.toString(c.getList()[2].getSammer()));
 				}
-
 			});
+		}
+	}
+	
+	class AutoBeanHandler implements ClickHandler {
+
+		@Override
+		public void onClick(ClickEvent event) {
+			// TODO Auto-generated method stub
+			TInterface dto = makeTest();
+			dto.setName("miu miu");
+			String s = serializeToJson(dto);
+			TInterface dto2 = deserializeFromJson(s);
+			String s2 = dto2.getName();
+			jsonLabel.setText(s2);
 		}
 	}
 
@@ -131,7 +202,16 @@ public class GWTLearning01 implements EntryPoint {
         AutoBean<TInterface> bean = AutoBeanUtils.getAutoBean(test);
         return AutoBeanCodex.encode(bean).getPayload();
     }
-	
+    
+	private void showElapsed() {
+		//double elapsedTime = (System.currentTimeMillis() - startTime) / 1000.0;
+		//NumberFormat n = NumberFormat.getFormat("#,##0.000");
+		Date date = new Date();
+		DateTimeFormat format = DateTimeFormat.getFormat("yyyy-MM-dd hh:mi:ss zzz dow mon");
+		format.format(date);
+		elapsedLabel.setText(format.format(date));
+	}
+
 	static class Customer extends JavaScriptObject {
 		// Overlay types always have protected, zero-arg ctors
 		protected Customer() { }
@@ -147,5 +227,28 @@ public class GWTLearning01 implements EntryPoint {
 		protected MDetail(){ }
 		public final native String getName()/*-{ return this.Name; }-*/;
 		public final native int getSammer()/*-{ return this.Sammer; }-*/;
+	}
+	
+	class TreeSelectHendler implements SelectionHandler<TreeItem> {
+
+		@Override
+		public void onSelection(SelectionEvent<TreeItem> event) {
+			treeLabel.setText(event.getSelectedItem().getText());
+			if (event.getSelectedItem().getWidget() instanceof CheckBox) {
+
+				final SelectionEvent<TreeItem> event0 = event;
+				Timer timer = new Timer() {
+					public void run() {
+						CheckBox cb = (CheckBox) event0.getSelectedItem().getWidget();
+						if (cb.getValue()) {
+							treeLabel.setText(event0.getSelectedItem().getText() + " checked");
+						} else {
+							treeLabel.setText(event0.getSelectedItem().getText() + " unchecked");
+						}
+					}
+				}; // Execute the timer to expire 2 seconds in the future
+				timer.schedule(50);
+			}
+		}
 	}
 }

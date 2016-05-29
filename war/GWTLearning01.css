@@ -1,10 +1,8 @@
 
 .container {margin-left: 20px;  width: 95%; height: 400px; margin-top:10px}
-#container01 {background-color: #b0e0c0}
+#container01 {background-color: #b0e0c0; overflow: scroll;}
 #container02 {background-color: #b0e0d0}
 #container03 {background-color: #b0e0e0}
 #container04 {background-color: #b0e0f0}
-
-
-
+.server-error{color: red}
 
