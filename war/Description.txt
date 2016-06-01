@@ -87,7 +87,7 @@ Date date = new Date();
 DateTimeFormat format = DateTimeFormat.getFormat("yyyy-MM-dd hh:mi:ss");
 format.format(date);
 
-延时逻辑  定时逻辑：
+定时逻辑：
 
 		com.google.gwt.user.client.Timer Timer timer = new Timer() {
 			public void run() {
@@ -96,7 +96,8 @@ format.format(date);
 			}
 		}; // Execute the timer to expire 2 seconds in the future
 		timer.schedule(2000);
-		//--------------------------
+
+周期逻辑：
 		com.google.gwt.user.client.Timer elapsedTimer = new Timer() {
 			public void run() {
 				showElapsed();
@@ -105,6 +106,8 @@ format.format(date);
 		// Schedule the timer for every 1/2 second (500 milliseconds)
 		elapsedTimer.scheduleRepeating(500);
 				
+延时逻辑：
+DeferredCommand.addCommand（不详）
 
 树形控件：
 import com.google.gwt.user.client.ui.Tree;

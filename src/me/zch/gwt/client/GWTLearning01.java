@@ -36,7 +36,9 @@ import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.LayoutPanel;
 import com.google.gwt.user.client.ui.PopupPanel;
+import com.google.gwt.user.client.ui.RootLayoutPanel;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.StackLayoutPanel;
 import com.google.gwt.user.client.ui.StackPanel;
@@ -46,6 +48,7 @@ import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Tree;
 import com.google.gwt.user.client.ui.TreeItem;
 import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.gwt.user.client.ui.Widget;
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.google.web.bindery.autobean.shared.AutoBeanCodex;
 import com.google.web.bindery.autobean.shared.AutoBeanFactory;
@@ -136,6 +139,23 @@ public class GWTLearning01 implements EntryPoint {
         tree.addItem(root);
         RootPanel.get("container03").add(tree);
         tree.addSelectionHandler(new TreeSelectHendler());
+        //----------------------------------
+        
+        Widget child0 = new HTML("child0"), child1 = new HTML("child1"), child2 = new HTML("child2");
+        LayoutPanel p = new LayoutPanel();
+        p.add(child0); p.add(child1); p.add(child2);
+        p.setWidgetLeftWidth(child0, 0, Unit.PCT, 50, Unit.PCT);  // Left panel
+        p.setWidgetRightWidth(child1, 0, Unit.PCT, 50, Unit.PCT); // Right panel
+        p.setWidgetLeftRight(child2, 5, Unit.EM, 5, Unit.EM);     // Center panel
+        p.setWidgetTopBottom(child2, 5, Unit.EM, 5, Unit.EM);
+        child0.setStyleName("left");
+        child1.setStyleName("right");
+        //RootLayoutPanel.get().add(p);
+        RootPanel.get("container04").add(p);
+        
+        //
+
+        
 	}
 
 	class JavaScriptObjectHandler implements ClickHandler {
