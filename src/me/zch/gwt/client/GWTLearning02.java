@@ -4,69 +4,58 @@ import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.FlowPanel;
+import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootLayoutPanel;
 import com.google.gwt.user.client.ui.SplitLayoutPanel;
-import com.google.gwt.user.client.ui.Tree;
-import com.google.gwt.user.client.ui.TreeItem;
+import com.google.gwt.user.client.ui.TextArea;
+import me.zch.gwt.client.panels.LeftPanel;
+import me.zch.gwt.client.panels.RightPanel;
 
-public class GWTLearning02 implements EntryPoint{
+public class GWTLearning02 implements EntryPoint {
 
-	private final DataStoreServiceAsync dataStoreService = GWT.create(DataStoreService.class);
-	
-	Tree tree = new Tree();
 	Label label01 = new Label();
+	TextArea t = new TextArea();
+	HTML labelDescription = new HTML();
+	private final GreetingServiceAsync greetingService = GWT.create(GreetingService.class);
+	LeftPanel lp = null;
 	@Override
 	public void onModuleLoad() {
 
-		SplitLayoutPanel  p = new SplitLayoutPanel();
-		RootLayoutPanel.get().add(p);
-        TreeItem root = new TreeItem(); 
-        root.setText("Root");
-        root.addTextItem("item0"); 
-        TreeItem item = new TreeItem(); 
-        item.setText("item2");
-        root.addItem(item);
-        tree.addItem(root);
-        p.addWest(tree, 200);
-        tree.addStyleName("blue-backgroud");
-        
-        FlowPanel fp = new FlowPanel();
-        p.add(fp);
-        fp.addStyleName("yellow-backgroud");
+		t.addStyleDependentName("readonly");
+		SplitLayoutPanel slp = new SplitLayoutPanel();
+		RootLayoutPanel.get().add(slp);
+		lp = new LeftPanel();
+		slp.addWest(lp.createPanel(), 200);
+		lp.getVp().addClickHandler(new MyClickHandler());
+		RightPanel rp = new RightPanel();
+		slp.add(rp.createPenal());
+		rp.getSp().add(labelDescription);
 
-        label01.setText("press to do something with google datastore...");
-        fp.add(label01);
-        
-        Button button01 = new Button();
-        button01.setText("Run DataStore...");
-        button01.addClickHandler(new DataStoreButtonHandler());
-        fp.add(button01);
+		greetingService.greetServer(0, "hello", new AsyncCallback<String>() { // 页面加载的时候调用说明文档
 
+			@Override
+			public void onFailure(Throwable caught) {
+				labelDescription.setHTML(caught.getMessage());
+				labelDescription.addStyleName("server-error");
+			}
+
+			@Override
+			public void onSuccess(String result) {
+				labelDescription.removeStyleName("server-error");
+				labelDescription.setHTML(result);
+			}
+		});
 	}
 	
-	class DataStoreButtonHandler implements ClickHandler{
+	class MyClickHandler implements ClickHandler{
 
 		@Override
 		public void onClick(ClickEvent event) {
-			dataStoreService.dataStoreServer(1, "", new AsyncCallback<String>(){
-
-				@Override
-				public void onFailure(Throwable caught) {
-					label01.setText(caught.getMessage());
-				}
-
-				@Override
-				public void onSuccess(String result) {
-					label01.setText(result);
-				}
-				
-			});
+			Window.alert("event: " + lp.getOutputString());
 		}
 		
 	}
-
 }

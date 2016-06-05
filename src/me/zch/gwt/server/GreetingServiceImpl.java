@@ -1,17 +1,7 @@
 package me.zch.gwt.server;
 
 import me.zch.gwt.client.GreetingService;
-import me.zch.gwt.shared.FieldVerifier;
-
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.Date;
-
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 /**
@@ -34,29 +24,10 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements Greetin
 		default:
 			throw new IllegalArgumentException("unknown command id.");
 		}
-		
 	}
 	
 	private String command0() throws IOException {
-		BufferedReader br = null;
-		try {
-			File file = new File("Description.txt");
-			FileInputStream fis = new FileInputStream(file);
-			InputStreamReader isr = new InputStreamReader(fis,"UTF-8");
-			br = new BufferedReader(isr);
-			String result = "";
-			String t;
-			while ((t = br.readLine()) != null) {
-				t += "<br>";
-				result += t;
-			}
-			return result;
-		} finally {
-			try {
-				br.close();
-			} catch (IOException ex) {
-			}
-		}
+		return Tools.loadTextFileToHtml("Description.txt");
 	}
 	
 	private String command1(){

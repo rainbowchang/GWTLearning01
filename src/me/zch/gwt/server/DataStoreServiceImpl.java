@@ -1,5 +1,6 @@
 package me.zch.gwt.server;
 
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
@@ -21,9 +22,16 @@ import com.google.appengine.api.datastore.Query.FilterPredicate;
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
-
 import me.zch.gwt.client.DataStoreService;
 
 
@@ -56,17 +64,36 @@ public class DataStoreServiceImpl extends RemoteServiceServlet implements DataSt
 //		} catch (EntityNotFoundException ex) {
 //			ex.printStackTrace();
 //		}
-
 		
+//		Query q = new Query("Person");
+//		Filter filter = new FilterPredicate("Firstname", FilterOperator.EQUAL, "Jerry");
+//		q.setFilter(filter);
+//		PreparedQuery pq = ds.prepare(q);
+//		for(Entity el : pq.asIterable()){
+//			s += el.getProperty("Firstname") + "." + el.getProperty("Lastname") + "  ";
+//		}
 		
-		Query q = new Query("Person");
-		Filter filter = new FilterPredicate("Firstname", FilterOperator.EQUAL, "Jerry");
-		q.setFilter(filter);
-		PreparedQuery pq = ds.prepare(q);
-		for(Entity el : pq.asIterable()){
-			s += el.getProperty("Firstname") + "." + el.getProperty("Lastname") + "  ";
+//		try {
+//			s = Tools.loadTextFile("Books.xml");
+//		} catch (IOException e) {
+//			throw new IllegalArgumentException(e.getMessage());
+//		}
+		
+		try {
+			DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+			DocumentBuilder db = dbf.newDocumentBuilder();
+			Document doc = db.parse("Books.xml");
+			NodeList nl = doc.getElementsByTagName("book");
+			for(int i = 0 ;i<nl.getLength(); i++){
+				s += nl.item(i).getAttributes().getNamedItem("name").getNodeValue() + ":";
+				s += nl.item(i).getTextContent() + ";";
+			}
+		} catch (ParserConfigurationException | SAXException | IOException ex) {
+			throw new IllegalArgumentException(ex.getMessage());
+		}finally{
+			
 		}
-		
+
 		return s;
 	}
 }
