@@ -19,6 +19,7 @@ public class Tools {
 			String result = "";
 			String t;
 			while ((t = br.readLine()) != null) {
+				t = t.replace(" ", "&nbsp;");
 				t += "<br>";
 				result += t;
 			}
@@ -59,5 +60,12 @@ public class Tools {
 	
 	public static void createPicture(){
 		
+	}
+	
+	public static String escapeHtml(String html) {
+		if (html == null) {
+			return null;
+		}
+		return html.replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;");
 	}
 }

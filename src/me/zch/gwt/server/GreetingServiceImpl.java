@@ -13,13 +13,13 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements Greetin
 	public String greetServer(int commandId, String input) throws IllegalArgumentException {
 
 		switch (commandId) {
-		case 0:  //¶ÁÈ¡ËµÃ÷ÎÄµµ
+		case 0:  //ï¿½ï¿½È¡Ëµï¿½ï¿½ï¿½Äµï¿½
 			try {
 				return command0();
 			} catch (IOException e) {
 				throw new IllegalArgumentException(e.getMessage());
 			}
-		case 1: //jsonÑÝÊ¾
+		case 1: //jsonï¿½ï¿½Ê¾
 			return command1();
 		default:
 			throw new IllegalArgumentException("unknown command id.");
@@ -32,7 +32,7 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements Greetin
 	
 	private String command1(){
 		String ss = "{ \"FirstName\" : \"Jimmy\", \"LastName\" : \"Webber\", \"List\" : [{\"Name\":\"book\",\"Sammer\": 1},{\"Name\":\"wine\",\"Sammer\": 2},{\"Name\":\"lightening\",\"Sammer\": 4}]}";
-		return escapeHtml(ss);
+		return Tools.escapeHtml(ss);
 	}
 	
 
@@ -43,11 +43,6 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements Greetin
 	 * @param html the html string to escape
 	 * @return the escaped string
 	 */
-	private String escapeHtml(String html) {
-		if (html == null) {
-			return null;
-		}
-		return html.replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;");
-	}
+
 
 }
