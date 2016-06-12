@@ -34,67 +34,73 @@ import org.xml.sax.SAXException;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import me.zch.gwt.client.DataStoreService;
 
-
 @SuppressWarnings("serial")
 public class DataStoreServiceImpl extends RemoteServiceServlet implements DataStoreService {
 
 	@Override
 	public String dataStoreServer(int commandId, String input) throws IllegalArgumentException {
-
-		DatastoreService ds = DatastoreServiceFactory.getDatastoreService();
-		
-		Key key = KeyFactory.createKey("Person", 1);
-		
-//		Entity e = new Entity(key);
-//		e.setProperty("Person_id", 1);
-//		e.setProperty("Firstname", "Jerry");
-//		e.setProperty("Lastname", "Moa");
-//		e.setProperty("age", 2);
-//		key = ds.put(e);
-//		
-//		Entity user = new Entity("User", key);
-//		user.setProperty("email", "Jerry@mail.com");
-//		user.setProperty("address", "117, lunie avenue.");	
-//		ds.put(user);
-		
 		String s = "";
-//		try {
-//			Entity e1 = ds.get(key);
-//			s = (String)e1.getProperty("Firstname");
-//		} catch (EntityNotFoundException ex) {
-//			ex.printStackTrace();
-//		}
-		
-//		Query q = new Query("Person");
-//		Filter filter = new FilterPredicate("Firstname", FilterOperator.EQUAL, "Jerry");
-//		q.setFilter(filter);
-//		PreparedQuery pq = ds.prepare(q);
-//		for(Entity el : pq.asIterable()){
-//			s += el.getProperty("Firstname") + "." + el.getProperty("Lastname") + "  ";
-//		}
-		
-//		try {
-//			s = Tools.loadTextFile("Books.xml");
-//		} catch (IOException e) {
-//			throw new IllegalArgumentException(e.getMessage());
-//		}
-		
-		try {
-			DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-			DocumentBuilder db = dbf.newDocumentBuilder();
-			Document doc = db.parse("Books.xml");
-			NodeList nl = doc.getElementsByTagName("book");
-			for(int i = 0 ;i<nl.getLength(); i++){
-				s += nl.item(i).getAttributes().getNamedItem("name").getNodeValue() + ":";
-				s += nl.item(i).getTextContent() + ";";
-			}
-		} catch (ParserConfigurationException | SAXException | IOException ex) {
-			throw new IllegalArgumentException(ex.getMessage());
-		}finally{
-			
-		}
+		switch (commandId) {
 
+		case 0:
+
+			DatastoreService ds = DatastoreServiceFactory.getDatastoreService();
+
+			Key key = KeyFactory.createKey("Person", 1);
+
+			// Entity e = new Entity(key);
+			// e.setProperty("Person_id", 1);
+			// e.setProperty("Firstname", "Jerry");
+			// e.setProperty("Lastname", "Moa");
+			// e.setProperty("age", 2);
+			// key = ds.put(e);
+			//
+			// Entity user = new Entity("User", key);
+			// user.setProperty("email", "Jerry@mail.com");
+			// user.setProperty("address", "117, lunie avenue.");
+			// ds.put(user);
+
+			// try {
+			// Entity e1 = ds.get(key);
+			// s = (String)e1.getProperty("Firstname");
+			// } catch (EntityNotFoundException ex) {
+			// ex.printStackTrace();
+			// }
+
+			// Query q = new Query("Person");
+			// Filter filter = new FilterPredicate("Firstname",
+			// FilterOperator.EQUAL, "Jerry");
+			// q.setFilter(filter);
+			// PreparedQuery pq = ds.prepare(q);
+			// for(Entity el : pq.asIterable()){
+			// s += el.getProperty("Firstname") + "." +
+			// el.getProperty("Lastname") + " ";
+			// }
+
+			// try {
+			// s = Tools.loadTextFile("Books.xml");
+			// } catch (IOException e) {
+			// throw new IllegalArgumentException(e.getMessage());
+			// }
+			break;
+		case 1: //后台处理xml
+			try {
+				DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+				DocumentBuilder db = dbf.newDocumentBuilder();
+				Document doc = db.parse("Books.xml");
+				NodeList nl = doc.getElementsByTagName("book");
+				for (int i = 0; i < nl.getLength(); i++) {
+					s += nl.item(i).getAttributes().getNamedItem("name").getNodeValue() + ":";
+					s += nl.item(i).getTextContent() + ";";
+				}
+			} catch (ParserConfigurationException | SAXException | IOException ex) {
+				throw new IllegalArgumentException(ex.getMessage());
+			} finally {
+
+			}
+			break;
+		}
 		return s;
+
 	}
 }
-

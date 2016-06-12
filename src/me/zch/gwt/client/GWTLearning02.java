@@ -15,6 +15,11 @@ import com.google.gwt.user.client.ui.RootLayoutPanel;
 import com.google.gwt.user.client.ui.SplitLayoutPanel;
 import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.xml.client.Document;
+import com.google.gwt.xml.client.Element;
+import com.google.gwt.xml.client.Node;
+import com.google.gwt.xml.client.NodeList;
+import com.google.gwt.xml.client.XMLParser;
 
 import me.zch.gwt.client.panels.LeftPanel;
 import me.zch.gwt.client.panels.RightPanel;
@@ -26,6 +31,7 @@ public class GWTLearning02 implements EntryPoint {
 	HTML htmlArea = new HTML();
 	Panel rightPanel;
 	private final GreetingServiceAsync greetingService = GWT.create(GreetingService.class);
+	private final DataStoreServiceAsync datastoreService = GWT.create(DataStoreService.class);
 	LeftPanel lp = null;
 	@Override
 	public void onModuleLoad() {
@@ -67,7 +73,7 @@ public class GWTLearning02 implements EntryPoint {
 				rightPanel.clear();
 				htmlArea = new HTML();
 				rightPanel.add(htmlArea);
-				greetingService.greetServer(0, "hello", new AsyncCallback<String>() { // ҳ����ص�ʱ�����˵���ĵ�
+				greetingService.greetServer(0, "hello", new AsyncCallback<String>() { 
 
 					@Override
 					public void onFailure(Throwable caught) {
@@ -91,6 +97,7 @@ public class GWTLearning02 implements EntryPoint {
 				flow.add(label);
 				Button buttonxml01 = new Button();
 				buttonxml01.setText("前台处理");
+
 				flow.add(buttonxml01);
 				Label label02 = new Label();
 				label02.setText("后台处理 xml");
@@ -98,6 +105,68 @@ public class GWTLearning02 implements EntryPoint {
 				Button buttonxml02 = new Button();
 				buttonxml02.setText("后台处理");
 				flow.add(buttonxml02);
+				final HTML htmlarea = new HTML();
+				flow.add(htmlarea);
+				greetingService.greetServer(2, "hello", new AsyncCallback<String>() {
+					@Override
+					public void onFailure(Throwable caught) {
+						htmlarea.setText(caught.getMessage());
+					}
+
+					@Override
+					public void onSuccess(String result) {
+						htmlarea.setText(result);
+					}
+				});
+				buttonxml01.addClickHandler(new ClickHandler(){
+
+					@Override
+					public void onClick(ClickEvent event) {
+						greetingService.greetServer(2, "hello", new AsyncCallback<String>() {
+							@Override
+							public void onFailure(Throwable caught) {
+								htmlarea.setText(caught.getMessage());
+							}
+
+							@Override
+							public void onSuccess(String result) {
+								Document doc = XMLParser.parse(result);
+								Element root = doc.getDocumentElement();
+								NodeList nl = root.getElementsByTagName("book");
+								String s = "";
+								for(int i = 0; i<nl.getLength();i++){
+									Element element = (Element)nl.item(i);
+									s += element.getAttribute("name") + ":";
+									NodeList nl02 = element.getChildNodes();
+									String s0 = "";
+									for(int j = 0; j < nl02.getLength(); j++){
+										if(nl02.item(j).getNodeType() == Node.TEXT_NODE){
+											s0 = nl02.item(j).getNodeValue();
+										}
+									}
+									s += s0 + "; ";
+								}
+								htmlarea.setText(s);
+							}
+						});
+					}
+				});
+				
+				buttonxml02.addClickHandler(new ClickHandler(){
+					@Override
+					public void onClick(ClickEvent event) {
+						datastoreService.dataStoreServer(1, "", new AsyncCallback<String>(){
+							@Override
+							public void onFailure(Throwable caught) {
+								htmlarea.setText(caught.getMessage());
+							}
+							@Override
+							public void onSuccess(String result) {
+								htmlarea.setText(result);
+							}
+						});
+					}
+				});
 				break;
 			case "Json":
 				

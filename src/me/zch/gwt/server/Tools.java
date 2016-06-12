@@ -20,7 +20,7 @@ public class Tools {
 			String t;
 			while ((t = br.readLine()) != null) {
 				t = t.replace(" ", "&nbsp;");
-				t += "<br>";
+				t += "<br/>";
 				result += t;
 			}
 			return result;

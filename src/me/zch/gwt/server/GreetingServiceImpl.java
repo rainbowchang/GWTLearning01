@@ -13,14 +13,21 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements Greetin
 	public String greetServer(int commandId, String input) throws IllegalArgumentException {
 
 		switch (commandId) {
-		case 0:  //��ȡ˵���ĵ�
+		case 0:  
 			try {
 				return command0();
 			} catch (IOException e) {
 				throw new IllegalArgumentException(e.getMessage());
 			}
-		case 1: //json��ʾ
+		case 1: //json
 			return command1();
+			
+		case 2: 
+			try {
+				return command2();
+			} catch (IOException e) {
+				throw new IllegalArgumentException(e.getMessage());
+			}
 		default:
 			throw new IllegalArgumentException("unknown command id.");
 		}
@@ -28,6 +35,10 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements Greetin
 	
 	private String command0() throws IOException {
 		return Tools.loadTextFileToHtml("Description.txt");
+	}
+	
+	private String command2() throws IOException {
+		return Tools.loadTextFile("books.xml");
 	}
 	
 	private String command1(){
