@@ -49,7 +49,6 @@ public class GWTLearning01 implements EntryPoint {
 	final Button button02 = new Button();
 	private Timer elapsedTimer;
 	private Label elapsedLabel = new Label();
-	private long startTime;
 	//-------------------------
 	Tree tree = new Tree();
 	Label treeLabel = new Label();
@@ -73,7 +72,7 @@ public class GWTLearning01 implements EntryPoint {
         test.setName("achu");
         jsonLabel.setText(deserializeFromJson(serializeToJson(test)).getName());
         
-        greetingService.greetServer(0, "hello", new AsyncCallback<String>() { //Ò³Ãæ¼ÓÔØµÄÊ±ºòµ÷ÓÃËµÃ÷ÎÄµµ
+        greetingService.greetServer(0, "hello", new AsyncCallback<String>() { //Ò³ï¿½ï¿½ï¿½ï¿½Øµï¿½Ê±ï¿½ï¿½ï¿½ï¿½ï¿½Ëµï¿½ï¿½ï¿½Äµï¿½
 
 			@Override
 			public void onFailure(Throwable caught) {
@@ -89,17 +88,12 @@ public class GWTLearning01 implements EntryPoint {
         });
         
         RootPanel.get("container02").add(elapsedLabel);
-		// ... Add elapsedLabel to a Panel ...
-		// Create a new timer
 		elapsedTimer = new Timer() {
 			public void run() {
 				showElapsed();
 			}
 		};
-		startTime = System.currentTimeMillis();
-		// Schedule the timer for every 1/2 second (500 milliseconds)
 		elapsedTimer.scheduleRepeating(500);
-		// ... The elapsed timer has started ...
         
         //---------------------------------
         RootPanel.get("container03").add(treeLabel);
@@ -193,11 +187,8 @@ public class GWTLearning01 implements EntryPoint {
     }
     
 	private void showElapsed() {
-		//double elapsedTime = (System.currentTimeMillis() - startTime) / 1000.0;
-		//NumberFormat n = NumberFormat.getFormat("#,##0.000");
 		Date date = new Date();
 		DateTimeFormat format = DateTimeFormat.getFormat("yyyy-MM-dd hh:mi:ss zzz dow mon");
-		format.format(date);
 		elapsedLabel.setText(format.format(date));
 	}
 
