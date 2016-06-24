@@ -25,6 +25,9 @@ import com.google.web.bindery.autobean.shared.AutoBean;
 import com.google.web.bindery.autobean.shared.AutoBeanCodex;
 import com.google.web.bindery.autobean.shared.AutoBeanFactory;
 import com.google.web.bindery.autobean.shared.AutoBeanUtils;
+
+import me.zch.gwt.shared.ToolsTimer;
+
 import com.google.gwt.i18n.client.DateTimeFormat;
 /**
  * Entry point classes define <code>onModuleLoad()</code>.//add 201605232116
@@ -90,7 +93,7 @@ public class GWTLearning01 implements EntryPoint {
         RootPanel.get("container02").add(elapsedLabel);
 		elapsedTimer = new Timer() {
 			public void run() {
-				showElapsed();
+				elapsedLabel.setText(ToolsTimer.getCurrentTime());
 			}
 		};
 		elapsedTimer.scheduleRepeating(500);
@@ -185,12 +188,6 @@ public class GWTLearning01 implements EntryPoint {
         AutoBean<TInterface> bean = AutoBeanUtils.getAutoBean(test);
         return AutoBeanCodex.encode(bean).getPayload();
     }
-    
-	private void showElapsed() {
-		Date date = new Date();
-		DateTimeFormat format = DateTimeFormat.getFormat("yyyy-MM-dd hh:mi:ss zzz dow mon");
-		elapsedLabel.setText(format.format(date));
-	}
 
 	static class Customer extends JavaScriptObject {
 		// Overlay types always have protected, zero-arg ctors

@@ -47,7 +47,7 @@ public class GWTLearning02 implements EntryPoint {
 		rightPanel = rp.getSp();
 		rightPanel.add(htmlArea);
 
-		greetingService.greetServer(0, "hello", new AsyncCallback<String>() { // ҳ����ص�ʱ�����˵���ĵ�
+		greetingService.greetServer(0, "hello", new AsyncCallback<String>() {
 
 			@Override
 			public void onFailure(Throwable caught) {
@@ -169,8 +169,20 @@ public class GWTLearning02 implements EntryPoint {
 				});
 				break;
 			case "Json":
-				
+				rightPanel.clear();
+				FlowPanel flow1 = new FlowPanel();
+				rightPanel.add(flow1);
+				Label labelDescription = new Label();
+				labelDescription.setText("JSON 的前台处理和后台处理方式:");
+				flow1.add(labelDescription);
+				Button button01 = new Button();
+				button01.setText("JavaScriptObject Test");
+				flow1.add(button01);
+				button01.addClickHandler();
+				break;
 			case "Label":
+				
+				break;
 			default:
 				rightPanel.clear();
 			}
