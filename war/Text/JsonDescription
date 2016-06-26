@@ -1,0 +1,66 @@
+Json的使用方法
+
+一、编码和解码
+定义接口
+	public interface TInterface {
+		public String getName();
+		public void setName(String name);
+	}
+	
+定义接口
+	public interface MyFactory extends AutoBeanFactory {
+		AutoBean<TInterface> test();
+	}
+定义过程
+	TInterface makeTest() {
+        // Construct the AutoBean
+        AutoBean<TInterface> test = factory.test();
+        // Return the Person interface shim
+        return test.as();
+    }
+    
+定义编码过程
+    String serializeToJson(TInterface test) {
+        // Retrieve the AutoBean controller
+        AutoBean<TInterface> bean = AutoBeanUtils.getAutoBean(test);
+        return AutoBeanCodex.encode(bean).getPayload();
+    }
+定义解码过程
+	TInterface deserializeFromJson(String json) {
+        AutoBean<TInterface> bean = AutoBeanCodex.decode(factory, TInterface.class, json);
+        return bean.as();
+    }
+定义编解码过程
+    	public void onClick(ClickEvent event) {
+			// TODO Auto-generated method stub
+			TInterface dto = makeTest();
+			dto.setName("miu miu");
+			String s = serializeToJson(dto);
+			TInterface dto2 = deserializeFromJson(s);
+			String s2 = dto2.getName();
+			jsonLabel.setText(s2);
+		}
+
+		
+二、纯解码
+定义Dto
+	static class Customer extends JavaScriptObject {
+		// Overlay types always have protected, zero-arg ctors
+		protected Customer() { }
+		public final native String getFirstName() /*-{ return this.FirstName; }-*/;
+		public final native String getLastName() /*-{ return this.LastName; }-*/;
+		public final native MDetail[] getList() /*-{ return this.List; }-*/;
+		public final String getFullName() {
+			return getFirstName() + " " + getLastName();
+		}
+	}
+	static class MDetail extends JavaScriptObject {
+		protected MDetail(){ }
+		public final native String getName()/*-{ return this.Name; }-*/;
+		public final native int getSammer()/*-{ return this.Sammer; }-*/;
+	}
+服务端定义传递的字符串：
+    ss = "{ \"FirstName\" : \"Jimmy\", \"LastName\" : \"Webber\", \"List\" : [{\"Name\":\"book\",\"Sammer\": 1},{\"Name\":\"wine\",\"Sammer\": 2},{\"Name\":\"lightening\",\"Sammer\": 4}]}";
+客户端定义解码过程
+	Customer c = JsonUtils.safeEval(result);
+	jsonLabel.setText(Integer.toString(c.getList()[2].getSammer()));

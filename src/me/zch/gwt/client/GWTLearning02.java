@@ -9,6 +9,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HTML;
+import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.RootLayoutPanel;
@@ -173,15 +174,17 @@ public class GWTLearning02 implements EntryPoint {
 				FlowPanel flow1 = new FlowPanel();
 				rightPanel.add(flow1);
 				Label labelDescription = new Label();
-				labelDescription.setText("JSON 的前台处理和后台处理方式:");
+				labelDescription.setText("JSON 的处理方式:");
 				flow1.add(labelDescription);
 				Button button01 = new Button();
 				button01.setText("JavaScriptObject Test");
 				flow1.add(button01);
-				button01.addClickHandler();
+				//button01.addClickHandler();
 				break;
-			case "Label":
-				
+			case "口算":
+				rightPanel.clear();
+				MentalArithmetic ma = new MentalArithmetic();
+				rightPanel.add(ma.createPanel());
 				break;
 			default:
 				rightPanel.clear();

@@ -7,6 +7,18 @@
 	align: center
 }
 
+.text-align-right {
+	text-align: right
+}
+
+.text-margin-left{
+	margin-left: 5px
+}
+
+.MAU-padding{
+	padding: 10px
+}
+
 .fill-width{
 	width: 100%;
 }
@@ -17,6 +29,10 @@
 
 .yellow-backgroud {
 	background-color: #e0e0c0
+}
+
+.green-background{
+	background-color: #408080
 }
 
 .text-center {
@@ -30,4 +46,12 @@
 
 .float-right{
 	float:right;
+}
+
+.cell-item-top-margin{
+	margin-top: 7px
+}
+
+.font-for-topic{
+	font-size: large  !important;
 }

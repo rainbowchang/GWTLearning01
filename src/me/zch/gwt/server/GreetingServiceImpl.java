@@ -2,6 +2,8 @@ package me.zch.gwt.server;
 
 import me.zch.gwt.client.GreetingService;
 import java.io.IOException;
+import java.util.Random;
+
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 /**
@@ -9,6 +11,8 @@ import com.google.gwt.user.server.rpc.RemoteServiceServlet;
  */
 @SuppressWarnings("serial")
 public class GreetingServiceImpl extends RemoteServiceServlet implements GreetingService {
+
+	private static Random random = new Random();
 
 	public String greetServer(int commandId, String input) throws IllegalArgumentException {
 
@@ -28,13 +32,15 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements Greetin
 			} catch (IOException e) {
 				throw new IllegalArgumentException(e.getMessage());
 			}
+		case 3:
+			return commandGetArithmetic();
 		default:
 			throw new IllegalArgumentException("unknown command id.");
 		}
 	}
 	
 	private String command0() throws IOException {
-		return Tools.loadTextFileToHtml("Description.txt");
+		return Tools.loadTextFileToHtml("Text/Description.txt");
 	}
 	
 	private String command2() throws IOException {
@@ -46,14 +52,26 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements Greetin
 		return Tools.escapeHtml(ss);
 	}
 	
+	
+	private String commandGetArithmetic(){
+		int N1, N2, R;
+		boolean Operators;//true == +; false == -
 
-	/**
-	 * Escape an html string. Escaping data received from the client helps to
-	 * prevent cross-site script vulnerabilities.
-	 * 
-	 * @param html the html string to escape
-	 * @return the escaped string
-	 */
+		Operators = random.nextBoolean();
+		if(Operators){
+			N1 = random.nextInt(300);
+			N2 = random.nextInt(300);
+			R = N1 + N2;
+		}else{
+			N1 = random.nextInt(500);
+			N2 = random.nextInt(N1);
+			R = N1 - N2;
+		}
+		String result = String.format("{\"topic\": \"%d %s %d = \", \"answer\":%d}", N1, (Operators)?"+":"-", N2, R);
+		return result;
+	}
+
+
 
 
 }
