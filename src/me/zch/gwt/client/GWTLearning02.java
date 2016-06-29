@@ -186,6 +186,17 @@ public class GWTLearning02 implements EntryPoint {
 				MentalArithmetic ma = new MentalArithmetic();
 				rightPanel.add(ma.createPanel());
 				break;
+			case "数据库":
+				rightPanel.clear();
+				
+				
+				break;
+			case "HTTP Request":
+				rightPanel.clear();
+				HttpRequest hr = new HttpRequest();
+				rightPanel.add(hr.createPanel());
+				
+				break;
 			default:
 				rightPanel.clear();
 			}
