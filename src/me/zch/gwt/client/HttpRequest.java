@@ -1,5 +1,7 @@
 package me.zch.gwt.client;
 
+import java.util.List;
+
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.core.client.JsonUtils;
@@ -54,7 +56,7 @@ public class HttpRequest {
 					if(Response.SC_OK == response.getStatusCode()){  
 //						ta.setText(response.getText());  
 						StockInfoData sid = JsonUtils.safeEval(response.getText());
-						ta.setText(sid.getErrNum());
+						ta.setText(sid.getRetData().getMarket().getShanghai().getName());
 					}
 				}
 
@@ -79,7 +81,7 @@ public class HttpRequest {
 		protected StockInfoData(){}
 		public final native String getErrNum() /*-{ return this.errNum; }-*/;
 		public final native String getErrMsg() /*-{ return this.errMsg; }-*/;
-		public final native RetData getRetData() /*-{ return this.RetData; }-*/;
+		public final native RetData getRetData() /*-{ return this.retData; }-*/;
 	}
 	
 	public static class RetData extends JavaScriptObject{
