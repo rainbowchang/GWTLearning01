@@ -171,15 +171,10 @@ public class GWTLearning02 implements EntryPoint {
 				break;
 			case "Json":
 				rightPanel.clear();
-				FlowPanel flow1 = new FlowPanel();
-				rightPanel.add(flow1);
-				Label labelDescription = new Label();
-				labelDescription.setText("JSON 的处理方式:");
-				flow1.add(labelDescription);
-				Button button01 = new Button();
-				button01.setText("JavaScriptObject Test");
-				flow1.add(button01);
-				//button01.addClickHandler();
+				JsonLearningPanel jlp = new JsonLearningPanel();
+				
+				rightPanel.add(jlp.createJsonPanel());
+
 				break;
 			case "口算":
 				rightPanel.clear();
