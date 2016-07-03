@@ -13,10 +13,6 @@ import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.TextBox;
 
-import me.zch.gwt.client.HttpRequest.MarketsInfo;
-import me.zch.gwt.client.HttpRequest.RetData;
-import me.zch.gwt.client.HttpRequest.StockInfo;
-
 public class JsonLearningPanel {
 
 	public JsonLearningPanel(){}
