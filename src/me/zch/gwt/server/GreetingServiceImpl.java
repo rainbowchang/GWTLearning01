@@ -44,7 +44,7 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements Greetin
 	}
 	
 	private String command2() throws IOException {
-		return Tools.loadTextFile("books.xml");
+		return Tools.loadTextFile("Text/books.xml");
 	}
 	
 	private String command1(){
