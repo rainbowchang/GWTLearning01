@@ -34,7 +34,17 @@
 		<servlet-name>greetServlet02</servlet-name>
 		<url-pattern>/gwtlearning02/greet</url-pattern>
 	</servlet-mapping>
-
+	
+	<servlet>
+		<servlet-name>addService</servlet-name>
+		<servlet-class>me.zch.gwt.server.AddServiceImpl</servlet-class>
+	</servlet>
+	
+	<servlet-mapping>
+		<servlet-name>addService</servlet-name>
+		<url-pattern>/gwtlearning02/add</url-pattern>
+	</servlet-mapping>
+	
 	<!-- Default page to serve -->
 	<welcome-file-list>
 		<welcome-file>GWTLearning01.html</welcome-file>

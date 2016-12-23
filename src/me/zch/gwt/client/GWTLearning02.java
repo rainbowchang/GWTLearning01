@@ -192,9 +192,20 @@ public class GWTLearning02 implements EntryPoint {
 				rightPanel.add(hr.createPanel());
 				
 				break;
+			case "外部js调用":
+				rightPanel.clear();
+				OutJs oj = new OutJs();
+				rightPanel.add(oj.createPanel());
+				break;
+			case "RPC": 
+				rightPanel.clear();
+				XMLHTTPRequest xr = new XMLHTTPRequest();
+				rightPanel.add(xr.createPanel());
+				break;
 			default:
 				rightPanel.clear();
 			}
 		}
 	}
+
 }

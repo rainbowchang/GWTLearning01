@@ -48,43 +48,66 @@ public class HttpRequest {
 
 		@Override
 		public void onClick(ClickEvent event) {
-			String url ="http://apis.baidu.com/apistore/stockservice/stock" + "?" + "stockid=sz002230&list=1";
+//			String url ="http://apis.baidu.com/apistore/stockservice/stock" + "?" + "stockid=sz002230&list=1";
+//			RequestBuilder builder = new RequestBuilder(RequestBuilder.GET, URL.encode(url));
+//			builder.setHeader("apikey", "873c770acf1ce7ed92d7d912750e76fc");
+//			builder.setCallback(new RequestCallback() {
+//
+//				@Override
+//				public void onResponseReceived(Request request, Response response) {
+//					// TODO Auto-generated method stub
+//					if(Response.SC_OK == response.getStatusCode()){  
+////						ta.setText(response.getText());  
+//						StockInfoData sid = JsonUtils.safeEval(response.getText());
+//						ta.setText(response.getText());
+//						
+//						grid.setText(0, 1, sid.getRetData().getStockinfo()[0].getName());
+//						//DoubleRenderer dr = DoubleRenderer.instance(sid.getRetData().getStockinfo()[0].getCurrentPrice());
+//						
+//						grid.setText(1, 1, Float.toString(sid.getRetData().getStockinfo()[0].getCurrentPrice()));
+//						grid.setText(2, 1, Float.toString(sid.getRetData().getStockinfo()[0].getHPrice()));
+//						grid.setText(3, 1, Float.toString(sid.getRetData().getStockinfo()[0].getLPrice()));
+//						grid.setText(4, 1, Float.toString(sid.getRetData().getStockinfo()[0].getClosingPrice()));
+//						
+//						
+//					}
+//				}
+//
+//				@Override
+//				public void onError(Request request, Throwable exception) {
+//					// TODO Auto-generated method stub
+//					
+//				}
+//				
+//			});
+//			try {
+//				builder.send();
+//			} catch (RequestException e) {
+//				e.printStackTrace();
+//			}  
+			String url = "http://apis.baidu.com/apistore/stockservice/stock" + "?" + "stockid=sz002230&list=1";
 			RequestBuilder builder = new RequestBuilder(RequestBuilder.GET, URL.encode(url));
-			builder.setHeader("apikey", "873c770acf1ce7ed92d7d912750e76fc");
-			builder.setCallback(new RequestCallback() {
-
-				@Override
-				public void onResponseReceived(Request request, Response response) {
-					// TODO Auto-generated method stub
-					if(Response.SC_OK == response.getStatusCode()){  
-//						ta.setText(response.getText());  
-						StockInfoData sid = JsonUtils.safeEval(response.getText());
-						ta.setText(response.getText());
-						
-						grid.setText(0, 1, sid.getRetData().getStockinfo()[0].getName());
-						//DoubleRenderer dr = DoubleRenderer.instance(sid.getRetData().getStockinfo()[0].getCurrentPrice());
-						
-						grid.setText(1, 1, Float.toString(sid.getRetData().getStockinfo()[0].getCurrentPrice()));
-						grid.setText(2, 1, Float.toString(sid.getRetData().getStockinfo()[0].getHPrice()));
-						grid.setText(3, 1, Float.toString(sid.getRetData().getStockinfo()[0].getLPrice()));
-						grid.setText(4, 1, Float.toString(sid.getRetData().getStockinfo()[0].getClosingPrice()));
-					}
-				}
-
-				@Override
-				public void onError(Request request, Throwable exception) {
-					// TODO Auto-generated method stub
-					
-				}
-				
-			});
 			try {
-				builder.send();
+				builder.sendRequest(null, new RequestCallback(){
+
+					@Override
+					public void onResponseReceived(Request request, Response response) {
+						if (Response.SC_OK == response.getStatusCode())
+							ta.setText(response.getText());
+						else
+							ta.setText(Integer.toString(response.getStatusCode()));
+					}
+
+					@Override
+					public void onError(Request request, Throwable exception) {
+						ta.setText(exception.getMessage());
+					}
+					
+				});
 			} catch (RequestException e) {
 				e.printStackTrace();
-			}  
+			}
 		}
-		
 	}
 	
 }
