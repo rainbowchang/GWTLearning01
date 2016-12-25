@@ -70,8 +70,45 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements Greetin
 		String result = String.format("{\"topic\": \"%d %s %d = \", \"answer\":%d}", N1, (Operators)?"+":"-", N2, R);
 		return result;
 	}
+	
+	// n*n
+	private String commandGetArithmeticMultiple01() {
+		int N1, N2, R;
+		N1 = random.nextInt(10);
+		N2 = random.nextInt(10);
+		R = N1 * N2;
+		String result = String.format("{\"topic\": \"%d %s %d = \", \"answer\":%d}", N1, "X", N2, R);
+		return result;
+	}
 
-
-
-
+	// n0*n
+	private String commandGetArithmeticMultiple02() {
+		int N1, N2, R;
+		N1 = random.nextInt(10) * 10;
+		N2 = random.nextInt(10);
+		R = N1 * N2;
+		String result = String.format("{\"topic\": \"%d %s %d = \", \"answer\":%d}", N1, "X", N2, R);
+		return result;
+	}
+	
+	// n00*n
+	private String commandGetArithmeticMultiple03() {
+		int N1, N2, R;
+		N1 = random.nextInt(10) * 100;
+		N2 = random.nextInt(10);
+		R = N1 * N2;
+		String result = String.format("{\"topic\": \"%d %s %d = \", \"answer\":%d}", N1, "X", N2, R);
+		return result;
+	}
+	
+	// nml*n
+	private String commandGetArithmeticMultiple04() {
+		int N1, N2, R;
+		N1 = random.nextInt(999);
+		N2 = random.nextInt(10);
+		R = N1 * N2;
+		String result = String.format("{\"topic\": \"%d %s %d = \", \"answer\":%d}", N1, "X", N2, R);
+		return result;
+	}
+	
 }
